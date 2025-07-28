@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"github.com/Rus203/shop/cmd/api"
 )
 
 func main() {
-	fmt.Println("Hiiiiiii, world")
+	apiServer := api.NewApiServer()
+
+	apiServer.Run()
 }
