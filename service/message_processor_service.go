@@ -148,7 +148,7 @@ func (mp *MessageProcessor) handleOrderPrepared(event map[string]any) error {
 
 	time.Sleep(utils.GenerateRandomDuration(1, 6))	// todo: add bl here later
 
-	logger.Log(fmt.Sprintf("order %v prepared successfully", event["order_no"]))
+	logger.Log(fmt.Sprintf("order %v prepared successfully", event["id"]))
 
 	message := map[string]any{
 		"message": constants.ORDER_PREPARED_SUCCESSFULLY,
@@ -168,6 +168,8 @@ func (mp *MessageProcessor) handleOrderPrepared(event map[string]any) error {
 		pizza, ok := (*mp.connection)["pizza"]	 // todo: implement multiply conevtion storing
 
 		if  ok && pizza != nil {
+
+			logger.Log("Send Message")
 			err = (*mp.connection)["pizza"].SendMessage(json)
 		}
 

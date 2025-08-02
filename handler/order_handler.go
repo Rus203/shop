@@ -17,16 +17,18 @@ type OrderHandler struct {
 func (oh *OrderHandler) CreateOrder(ctx *gin.Context) {
 	payload := make(map[string]any) // todo: add validation here too
 
-	err := utils.ParseJSON(ctx, payload)
+	err := utils.ParseJSON(ctx, &payload)
 
 	if err != nil {
 		utils.WriteErrorJSON(ctx, http.StatusBadRequest, err)
+		return
 	}
 
 	payload["order_status"] = constants.ORDER_ORDERED
 
 	if err := oh.messagePublisher.PublishEvent(constants.KITCHEN_ORDER_QUEUE, payload); err != nil {
 		utils.WriteErrorJSON(ctx, http.StatusInternalServerError, err)
+		return
 	}
 
 	utils.WriteJSON(ctx, map[string]any{

@@ -21,8 +21,6 @@ func (rc *RabbitMQConnection) Reconnect() *amqp091.Connection {
 		panic(err)
 	}
 
-	log.Println("rabbitmq has been reconnected")
-
 	return conn
 }
 
@@ -34,6 +32,8 @@ func (rc *RabbitMQConnection) DeclareQueue(queueName string) error {
 	}
 
 	defer channel.Close()
+
+
 
 	_, err = channel.QueueDeclare(
 		queueName,
@@ -82,6 +82,8 @@ func GetNewRabbitMQConnection() *RabbitMQConnection {
 	defaultQueueName := Env.RabbitMQDefaultQueue
 
 	amqpURL := fmt.Sprintf("amqp://%s:%s@%s:%d", Env.RabbitMQUsername, Env.RabbitMQPassword, Env.RabbitMQHost, Env.RabbitMQPort)
+	
+
 	conn, err := amqp091.Dial(amqpURL)
 
 	if err != nil {

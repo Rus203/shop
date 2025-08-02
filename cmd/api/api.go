@@ -20,8 +20,6 @@ type APIServer struct {
 
 
 func (as *APIServer) Run() {
-	// configs.Env.Port
-
 	app := gin.Default()
 
 	app.Use(gin.Recovery())	// todo: add custoom error handling
@@ -33,6 +31,8 @@ func (as *APIServer) Run() {
 	messageConsumer := services.NewMessageConsumer()
 
 	go func() {
+
+		
 		err := messageConsumer.ConsumeEventProcess(constants.KITCHEN_ORDER_QUEUE, messageProcessor)
 
 		if err != nil {

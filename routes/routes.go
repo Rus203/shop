@@ -17,6 +17,6 @@ func RegisterRouters(r *gin.Engine, messagePublisher services.IMessagePublisher,
 	or := router.Group("/orders")
 	RegisterOrderRoutes(or, messagePublisher)
 
-	ar := router.Group("/app")
+	ar := router.Group("/")
 	RegisterAppRoutes(ar)
 }

@@ -10,7 +10,7 @@ import (
 
 	"github.com/Rus203/shop/logger"
 	"github.com/Rus203/shop/service"
-	utils "github.com/Rus203/shop/util"
+	"github.com/Rus203/shop/util"
 )
 
 type IWebSocketHandler interface {
@@ -25,7 +25,11 @@ type WebSocketHandler struct {
 }
 
 func (wh *WebSocketHandler) HandleConnection(ctx *gin.Context) {
+
+	logger.Log("websocket handshake !!")
 	conn, err := wh.upgrader.Upgrade(ctx.Writer, ctx.Request, nil)
+
+	logger.Log("Upgrade websocket connection")
 
 	if err != nil {
 		logger.Log("Failed to upgrade connection")
@@ -33,15 +37,25 @@ func (wh *WebSocketHandler) HandleConnection(ctx *gin.Context) {
 
 	defer conn.Close()
 
-	utils.WriteWebSocketMessage(conn, "Started taking order")
+			logger.Log("Before writing")
+
+	if err := utils.WriteWebSocketMessage(conn, "Started taking order"); err != nil {
+		logger.Panic(err)
+	}
+
+			logger.Log("create a connection")
 
 	connection := services.NewWebSocketConnection(conn)
+
+	logger.Log("Send")
 	wh.addConnection("pizza", connection)		// todo: implement multiply conevtion storing
 
+
 	for {
-		logger.Log("no message is coming from client")
+		// logger.Log("no message is coming from client")
 		time.Sleep(time.Second)
 	}
+
 }
 
 func (wh *WebSocketHandler) addConnection(clientId string, connection services.IWebSocketConnection) {

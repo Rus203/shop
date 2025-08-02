@@ -3,6 +3,7 @@ package services
 import (
 	"sync"
 
+	"github.com/Rus203/shop/logger"
 	"github.com/gorilla/websocket"
 )
 
@@ -21,7 +22,8 @@ func (wc *WebSocketConnection) SendMessage(message []byte) error {
 	wc.mutex.Lock()
 	defer wc.mutex.Unlock()
 
-	return wc.conn.WriteMessage(0, message)
+	logger.Log("Send")
+	return wc.conn.WriteMessage(websocket.TextMessage, message)
 }
 
 func (wc *WebSocketConnection) ReceiveMessage() ([]byte, error) {

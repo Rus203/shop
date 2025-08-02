@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/Rus203/shop/config"
-	"github.com/Rus203/shop/logger"
 	"github.com/rabbitmq/amqp091-go"
+
+	"github.com/Rus203/shop/config"
+
+	"github.com/Rus203/shop/logger"
 )
 
 type IMessagePublisher interface {
@@ -58,6 +60,9 @@ func (mp *MessagePublisher) DeclareQueue(queueName string) error {
 
 func NewMessagePublisher() *MessagePublisher {
 	rabbitMQConf := configs.GetNewRabbitMQConnection()
+
+	rabbitMQConf.DeclareQueue(rabbitMQConf.GetQueue())
+
 	return &MessagePublisher{
 		conn: rabbitMQConf,
 	}

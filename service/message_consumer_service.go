@@ -25,7 +25,7 @@ func (mc *MessageConsumer) ConsumeEventProcess(queueName string, processor IMess
 	channel := mc.conn.GetChannel()
 
 	if channel == nil {
-		logger.Panic("messaging channel is nil, retry !")
+		logger.Panic("messaging channel is nil, retry!")
 	}
 
 	msgs, err := channel.Consume(
@@ -39,6 +39,7 @@ func (mc *MessageConsumer) ConsumeEventProcess(queueName string, processor IMess
 	)
 
 	if err != nil {
+		fmt.Println("error here")
 		return fmt.Errorf("failed to consume message: %w", err)
 	}
 
